@@ -1,7 +1,7 @@
 #include<iostream>
 #include<vector>
 
-static std::vector<int64_t> F;
+static std::vector<int64_t> F(100, -1);
 int64_t fibonaci_O_N(int64_t n){
     // Memoization
     if(n>1){
@@ -24,6 +24,7 @@ int64_t fibonaci_O_2powN(int64_t n){
     return n;
 }
 
+
 int64_t iterativeFibonaci(int64_t n){
     int64_t sum=0, temp0=0, temp1=1;
     for(int i=2; i<n+1; i++){
@@ -34,15 +35,23 @@ int64_t iterativeFibonaci(int64_t n){
     return sum;
 }
 
+//subproblems solved and recored. Therefore, it can be reused.
+int64_t BottomUp_DynamicProgramming_Fibonaci(int64_t n){
+    F.clear(); // creta new array or list;
+    int64_t f;
+    for(int i=0; i<n+1; i++){
+        if (i<3)
+            f=1;
+        else f=F[i-1]+F[i-2];
+        F[i]=f;
+    }
+    return F[n];
+}
+
 int main(){
-    //---------------
-    int num =100, i=0;
-    F.reserve(num);
-    while(i++ < num)
-        F.emplace_back(-1);  
-    //---------------
-    std::cout<<iterativeFibonaci(num)<<std::endl;
+    std::cout<<iterativeFibonaci(45)<<std::endl;
     std::cout<<fibonaci_O_2powN(45)<<std::endl; // my computer is too slow that it more calculate
-    std::cout<<fibonaci_O_N(num);
+    std::cout<<fibonaci_O_N(45)<<std::endl;
+    std::cout<<BottomUp_DynamicProgramming_Fibonaci(45);
     std::cin.get();
 }
